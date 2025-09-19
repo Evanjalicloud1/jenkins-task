@@ -4,7 +4,8 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git url: 'https://github.com/Evanjalicloud1/jenkins-task.git', branch: 'main'
+        // use SSH repo (Jenkins already used SSH earlier)
+        git url: 'git@github.com:Evanjalicloud1/jenkins-task.git', branch: 'main'
       }
     }
 
@@ -43,10 +44,11 @@ pipeline {
       // archive the build output
       archiveArtifacts artifacts: 'build-output.txt', fingerprint: true
 
-      // email with console tail and attached build-output.txt
+      // send email (from set to match SMTP user)
       emailext(
         subject: "Jenkins: ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
         to: "evanjalievanjali@gmail.com",
+        from: "evanjalievanjali@gmail.com",
         body: """Job: ${env.JOB_NAME}
 Build: ${env.BUILD_NUMBER}
 Result: ${currentBuild.currentResult}
@@ -61,4 +63,3 @@ ${'$'}{BUILD_LOG, maxLines=200, escapeHtml=false}
     }
   }
 }
-
