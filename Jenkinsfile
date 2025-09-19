@@ -10,7 +10,6 @@ pipeline {
 
     stage('Build') {
       steps {
-        // run build and capture output to build-output.txt
         sh '''
           echo "Building project..."
           echo "List workspace:"
@@ -54,7 +53,7 @@ Result: ${currentBuild.currentResult}
 Build URL: ${env.BUILD_URL}
 
 Console (last 200 lines):
-${BUILD_LOG, maxLines=200, escapeHtml=false}
+${'$'}{BUILD_LOG, maxLines=200, escapeHtml=false}
 """,
         attachmentsPattern: 'build-output.txt',
         mimeType: 'text/plain'
@@ -62,3 +61,4 @@ ${BUILD_LOG, maxLines=200, escapeHtml=false}
     }
   }
 }
+
